@@ -1,8 +1,13 @@
+# gravar o codigo pra mandar no zap
+# arrumar o tab pra entrar na licao, colocar o enviar a licao com o mouse provavelmente
+
 import time
-from tkinter.constants import S
+
 import pyautogui
 
+
 pyautogui.FAILSAFE = True
+
 
 # definicao das funcoes
 def clicar_em(x, y):
@@ -33,10 +38,72 @@ def fechar_pagina():
     pyautogui.hotkey("ctrl", "w")
 
 
-def vezes_tecla_baixo(vezes):
+def vezes_tecla_cima(vezes):
     for i in range(vezes):
-        pyautogui.press("down")
+        pyautogui.press("up")
 
+
+def entrar_licao(vezes):
+    for i in range(vezes):
+        tab()
+    enter()
+    time.sleep(1)
+    tab()
+    enter()
+    time.sleep(2)
+
+
+def mandar_licao():
+    pyautogui.press("f12")
+    time.sleep(2.5)
+    pyautogui.hotkey("ctrl", "f")
+    time.sleep(0.5)
+    pyautogui.write(r"""//*[@id="root"]/div/div[1]/button[1]""")
+    time.sleep(1)
+    pyautogui.press("f12")
+    clicar_em(880, 602)
+    time.sleep(3)
+
+
+def entrar_html(codigo, x=0, y=0):
+    pyautogui.press("f12")
+    time.sleep(3.5)         
+    pyautogui.hotkey("ctrl", "f")
+    time.sleep(0.5)
+    pyautogui.write(codigo)
+    time.sleep(1.5)
+    pyautogui.press("f12")
+    if x == 0 and y == 0:
+        pass
+    else:
+        clicar_em(x, y)
+    time.sleep(1.5)
+    
+
+
+letras = ("a", "b", "c", "d", "e")
+def selecionar_alternativa(qtde_alternativas, alternativa):
+    cont = 0
+    for letra in letras:
+        if letra != alternativa:
+            pass
+        elif letra == alternativa:
+            if qtde_alternativas == 3:
+                subidas = (cont + 2) - (cont * 2)
+                vezes_tecla_cima(subidas)  
+                break
+
+            elif qtde_alternativas == 4:
+                subidas = (cont + 3) - (cont * 2)
+                vezes_tecla_cima(subidas)
+                break
+
+            elif qtde_alternativas == 5:
+                subidas = (cont + 4) - (cont * 2)
+                vezes_tecla_cima(subidas)
+                break
+
+        cont = cont + 1
 
 pyautogui.alert(
     "mova o mouse para o canto superior direito se quiser encerrar o programa",
@@ -68,15 +135,14 @@ time.sleep(3.5)
 clicar_em(1098, 134)
 time.sleep(5)
 
+cont = 0
 while True:
+    cont = cont + 1
     # abrir a lição
-    for i in range(4):
-        tab()
-    enter()
-    time.sleep(1)
-    tab()
-    enter()
-    time.sleep(2)
+    if cont == 1:
+        entrar_licao(4)
+    else:
+        entrar_licao(3)
 
     # copiar a perguta
     pyautogui.hotkey("ctrl", "a")
@@ -92,78 +158,39 @@ while True:
     time.sleep(1.5)
 
     # entrar no site
-    clicar_em(0, 376)
+    clicar_em(0, 400)
     time.sleep(1)
     tab()
     enter()
-    time.sleep(1.2)
+    time.sleep(1.5)
 
-    # ir nas respostas
-    pyautogui.press("f12")
-    time.sleep(2.5)
-    pyautogui.hotkey("ctrl", "f")
-    time.sleep(1)
-    pyautogui.write(
-        r"""//*[@id="question-sg-layout-container"]/div[1]/div[1]/div[1]/article/div/div/div[4]/div/div""", 1
+    # ir nas respostas do brainly
+    entrar_html(
+        r"""//*[@id="question-sg-layout-container"]/div[1]/div[2]/div[2]/div/div[1]/div[3]/div/div/div"""
     )
-    time.sleep(1)
-    clicar_em(183, 415)
-    time.sleep(0.5)
-    pyautogui.press("f12")
-    time.sleep(3)
+    time.sleep(4)
 
     # selecionar a alternativa
     fechar_pagina()
     time.sleep(1.5)
-    clicar_em(1294, 431)
+    clicar_em(1340, 548)
+    pyautogui.tripleClick(1356, 686)
+    pyautogui.tripleClick(1356, 686)
+    time.sleep(1)
 
-    pyautogui.press("f12")
-    time.sleep(2.5)
-    pyautogui.hotkey("ctrl", "f")
-    time.sleep(1)
-    pyautogui.write("question-choice")
-    time.sleep(1)
-    clicar_em(340, 430)
-    time.sleep(0.5)
-    pyautogui.press("f12")
+    entrar_html("question-choice", 872, 515)
 
     # verificar qual alternativa escolher
+
+    qtde_alternativas = pyautogui.prompt("Quantas questoes tem?\n(digite de 3 a 5)", "Quatidade de questões")
+
     alternativa = pyautogui.prompt(
         "Escreva qual é a alternativa...\nSe estiver em dúvida volte ao site da resposta e reveja",
-        "Confirmação da resposta",
+        "Confirmação da resposta".casefold(),
     )
 
-    if alternativa == "a" or alternativa == "A":
-        tab()
-        enter()
-        time.sleep(2.5)
-
-    elif alternativa == "b" or alternativa == "B":
-        vezes_tecla_baixo(1)
-        tab()
-        enter()
-        time.sleep(2.5)
-
-    elif alternativa == "c" or alternativa == "C":
-        vezes_tecla_baixo(2)
-        tab()
-        enter()
-        time.sleep(2.5)
-
-    elif alternativa == "d" or alternativa == "D":
-        vezes_tecla_baixo(3)
-        tab()
-        enter()
-        time.sleep(2.5)
-
-    elif alternativa == "e" or alternativa == "E":
-        vezes_tecla_baixo(4)
-        tab()
-        enter()
-        time.sleep(2.5)
-
-    # se nao digitar (a, b, c, d ou e) perguntar se deseja sair ou nao
-    else:
+    # tratamento de erro
+    if alternativa not in letras:
         sair_confirmar = pyautogui.confirm(
             "Aperte em 'ok' para encerrar ou 'cancelar' para continuar o programa",
             "Deseja sair?",
@@ -174,5 +201,7 @@ while True:
             break
         else:
             continue
-
-
+    
+    time.sleep(1.5)
+    selecionar_alternativa(int(qtde_alternativas), str(alternativa))
+    time.sleep(30)
