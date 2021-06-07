@@ -1,10 +1,5 @@
-# gravar o codigo pra mandar no zap
-# arrumar o tab pra entrar na licao, colocar o enviar a licao com o mouse provavelmente
-
 import time
-
 import pyautogui
-
 
 pyautogui.FAILSAFE = True
 
@@ -113,7 +108,7 @@ pyautogui.alert(
 # abrir o chrome
 pyautogui.hotkey("win", "s")
 time.sleep(1)
-pyautogui.write("chrome")
+pyautogui.write("edge")
 time.sleep(1)
 enter()
 time.sleep(4)
@@ -139,10 +134,10 @@ cont = 0
 while True:
     cont = cont + 1
     # abrir a lição
-    if cont == 1:
+    if cont != 111:
         entrar_licao(4)
-    else:
-        entrar_licao(3)
+    # else:
+    #     entrar_licao(3)
 
     # copiar a perguta
     pyautogui.hotkey("ctrl", "a")
@@ -204,4 +199,6 @@ while True:
     
     time.sleep(1.5)
     selecionar_alternativa(int(qtde_alternativas), str(alternativa))
-    time.sleep(30)
+    time.sleep(1)
+    mandar_licao()
+    time.sleep(4)
